@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using CleanArch.Application.Contracts.Infrastructure;
 using CleanArch.Application.Contracts.Persistance;
+using CleanArch.Application.Model.Mail;
 using CleanArch.Domain.Entities;
 using MediatR;
 using System;
@@ -15,11 +17,12 @@ namespace CleanArch.Application.Features.Events.Commands.CreateEvent
     {
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
-
-        public CreateEventCommandHandler(IMapper mapper, IEventRepository eventRepository)
+        private readonly IEmailService _emailService;
+        public CreateEventCommandHandler(IMapper mapper, IEventRepository eventRepository, IEmailService emailService)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
 
@@ -34,6 +37,15 @@ namespace CleanArch.Application.Features.Events.Commands.CreateEvent
             var @event = _mapper.Map<Event>(request);
             @event = await _eventRepository.AddAsync(@event);
 
+            var email = new Email() { To = "collegefnd@gmail.com", Body = $"A new event was created: {request}", Subject = "A new Event was created" };
+            try
+            {
+                await _emailService.SendEmail(email);
+            }
+            catch(Exception ex)
+            {
+                //logged
+            }
             return @event.EventId;
         }
     }
