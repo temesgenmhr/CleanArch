@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CleanArch.Application.Features.Categories.Queries.GetCategoriesListWithEvents
 {
-    class GetCategoriesListWithEventsQueryHandler : IRequestHandler<GetCategoriesListWithEventsQuery, List<CategoryEventListVm>>
+    public class GetCategoriesListWithEventsQueryHandler : IRequestHandler<GetCategoriesListWithEventsQuery, List<CategoryEventListVm>>
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly Mapper _mapper;
