@@ -1,4 +1,5 @@
-﻿using CleanArch.Domain.Common;
+﻿using CleanArch.Application.Contracts;
+using CleanArch.Domain.Common;
 using CleanArch.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,9 +13,15 @@ namespace CleanArch.Persistance
 {
    public class AppDbContext : DbContext
     {
+        private readonly ILoggedInUserService _loggedInUserService;
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
+        }
+        public AppDbContext(DbContextOptions<AppDbContext> options, ILoggedInUserService loggedInUserService)
+            : base(options)
+        {
+            _loggedInUserService = loggedInUserService;
         }
 
         public DbSet<Event> Events { get; set; }

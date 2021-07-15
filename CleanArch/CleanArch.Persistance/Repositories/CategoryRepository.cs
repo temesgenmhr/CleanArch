@@ -17,13 +17,11 @@ namespace CleanArch.Persistance.Repositories
 
         public async Task<List<Category>> GetCategoriesWithEvents(bool includePassedEvents)
         {
-            var allCategories = await _appDbContext.Categories.Include(x => x.Events).ToListAsync();
-
-            if(!includePassedEvents)
+            var allCategories = await _dbContext.Categories.Include(x => x.Events).ToListAsync();
+            if (!includePassedEvents)
             {
                 allCategories.ForEach(p => p.Events.ToList().RemoveAll(c => c.Date < DateTime.Today));
             }
-
             return allCategories;
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CleanArch.Application.Exceptions
 {
-    class BadRequestException : ApplicationException
+   public class BadRequestException : ApplicationException
     {
         public BadRequestException(string message) : base(message)
         {

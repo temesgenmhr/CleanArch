@@ -4,6 +4,7 @@ using CleanArch.Application.Contracts.Persistance;
 using CleanArch.Application.Model.Mail;
 using CleanArch.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,13 @@ namespace CleanArch.Application.Features.Events.Commands.CreateEvent
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
-        public CreateEventCommandHandler(IMapper mapper, IEventRepository eventRepository, IEmailService emailService)
+        private readonly ILogger<CreateEventCommandHandler> _logger;
+        public CreateEventCommandHandler(IMapper mapper, IEventRepository eventRepository, IEmailService emailService, ILogger<CreateEventCommandHandler> logger)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
             _emailService = emailService;
+            _logger = logger;
         }
 
 
@@ -45,6 +48,7 @@ namespace CleanArch.Application.Features.Events.Commands.CreateEvent
             catch(Exception ex)
             {
                 //logged
+                _logger.LogError($"Mail about event {@event.EventId} failed to an error with the mail service: {ex.Message}");
             }
             return @event.EventId;
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CleanArch.Domain.Entities
 { 
-    public class Event : AuditableEntity
+    public class Event 
     {
         public Guid EventId { get; set; }
         public string Name { get; set; }

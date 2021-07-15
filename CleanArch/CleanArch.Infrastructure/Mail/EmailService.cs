@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using Microsoft.Extensions.Logging;
 
 namespace CleanArch.Infrastructure.Mail
 {
     public class EmailService : IEmailService
     {
         public EmailSettings _emailSettings { get; }
+        public ILogger<EmailService> _looger { get; }
 
-        public EmailService(IOptions<EmailSettings> mailSettings) 
+        public EmailService(IOptions<EmailSettings> mailSettings, ILogger<EmailService> logger) 
         {
             _emailSettings = mailSettings.Value;
+            _looger = logger;
         }
 
         public async Task<bool> SendEmail(Email email)
@@ -35,10 +38,11 @@ namespace CleanArch.Infrastructure.Mail
 
             var sendGridMessage = MailHelper.CreateSingleEmail(from, to, subject, emailBody, emailBody);
             var response = await client.SendEmailAsync(sendGridMessage);
-
+            _looger.LogInformation("Email Sent");
             if (response.StatusCode == System.Net.HttpStatusCode.Accepted || response.StatusCode == System.Net.HttpStatusCode.OK)
                 return true;
 
+            _looger.LogError("Email seinding failed");
             return false;
         }
 

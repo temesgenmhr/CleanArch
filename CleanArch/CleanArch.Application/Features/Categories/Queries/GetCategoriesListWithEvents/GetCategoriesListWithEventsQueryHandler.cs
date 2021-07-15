@@ -14,9 +14,9 @@ namespace CleanArch.Application.Features.Categories.Queries.GetCategoriesListWit
     class GetCategoriesListWithEventsQueryHandler : IRequestHandler<GetCategoriesListWithEventsQuery, List<CategoryEventListVm>>
     {
         private readonly ICategoryRepository _categoryRepository;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
-        public GetCategoriesListWithEventsQueryHandler(Mapper mapper, ICategoryRepository categoryRepository)
+        public GetCategoriesListWithEventsQueryHandler(IMapper mapper, ICategoryRepository categoryRepository)
         {
             _mapper = mapper;
             _categoryRepository = categoryRepository;

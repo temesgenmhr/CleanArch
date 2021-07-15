@@ -1,5 +1,6 @@
 ﻿using CleanArch.Application.Contracts.Infrastructure;
 using CleanArch.Application.Model.Mail;
+using CleanArch.Infrastructure.FileExport;
 using CleanArch.Infrastructure.Mail;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ namespace CleanArch.Infrastructure
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<ICsvExporter, CsvExporter>();
             return services;
         }
     }
